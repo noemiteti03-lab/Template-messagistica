@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contattami</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    body { margin: 0; background: #f6f7fb; color: #111; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 28px 16px; }
+    .card {
+      background: #fff; border-radius: 16px; padding: 22px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    p { margin: 0 0 18px; color: #444; line-height: 1.5; }
+    form { display: grid; gap: 14px; }
+    label { font-size: 14px; font-weight: 600; }
+    input, textarea {
+      width: 100%;
+      padding: 12px 12px;
+      border: 1px solid #d8dbe5;
+      border-radius: 12px;
+      outline: none;
+      font-size: 15px;
+      background: #fff;
+      box-sizing: border-box;
+    }
+    input:focus, textarea:focus { border-color: #6b7cff; box-shadow: 0 0 0 3px rgba(107,124,255,.15); }
+    textarea { resize: vertical; min-height: 140px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      background: #111;
+      color: #fff;
+    }
+    .btn:disabled { opacity: .6; cursor: not-allowed; }
+    .note { font-size: 12px; color: #666; }
+    .status {
+      margin-top: 10px; padding: 10px 12px; border-radius: 12px; font-size: 14px;
+      display: none;
+    }
+    .status.ok { background: #e8fff1; color: #0a6b2b; display: block; }
+    .status.err { background: #ffecec; color: #8b1a1a; display: block; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Scrivimi un messaggio</h1>
+      <p>Compila i campi qui sotto e inviami la tua richiesta. Ti risponderò appena possibile.</p>
+
+      <form id="contactForm" novalidate>
+        <div class="row">
+          <div>
+            <label for="name">Nome</label><br/>
+            <input id="name" name="name" type="text" placeholder="Es. Mario Rossi" required minlength="2" />
+          </div>
+
+          <div>
+            <label for="email">Email</label><br/>
+            <input id="email" name="email" type="email" placeholder="Es. mario@email.com" required />
+          </div>
+        </div>
+
+        <div>
+          <label for="subject">Oggetto</label><br/>
+          <input id="subject" name="subject" type="text" placeholder="Es. Informazioni evento" maxlength="80" />
+          <div class="note">Facoltativo</div>
+        </div>
+
+        <div>
+          <label for="message">Messaggio</label><br/>
+          <textarea id="message" name="message" placeholder="Scrivi qui il tuo messaggio..." required minlength="10"></textarea>
+        </div>
+
+        <button class="btn" id="submitBtn" type="submit">Invia messaggio</button>
+
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+        <div class="note">I campi con * sono obbligatori (Nome, Email, Messaggio).</div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("contactForm");
+    const statusEl = document.getElementById("status");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function setStatus(type, text) {
+      statusEl.className = "status " + (type === "ok" ? "ok" : "err");
+      statusEl.textContent = text;
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      statusEl.className = "status";
+      statusEl.textContent = "";
+
+      // Validazione base HTML5
+      if (!form.checkValidity()) {
+        setStatus("err", "Controlla i campi: assicurati di inserire un'email valida e un messaggio di almeno 10 caratteri.");
+        return;
+      }
+
+      // QUI, nel prossimo step, collegheremo EmailJS.
+      submitBtn.disabled = true;
+      setStatus("ok", "Messaggio pronto per l'invio ✅ (collegamento EmailJS da aggiungere)");
+
+      // Simula invio (da rimuovere quando colleghi EmailJS)
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        form.reset();
+      }, 800);
+    });
+  </script>
+</body>
+</html>
